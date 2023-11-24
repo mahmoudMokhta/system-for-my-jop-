@@ -1,8 +1,15 @@
 .costum-bg {
-    background-color: rgb(193, 198, 202);
+    background-color: black;
+    color: white;
+    border: 1px solid white !important;
 }
 
-.sum-item{
-   font-size: 1.5rem;
+.sum-item {
+    font-size: 1.5rem;
     color: red;
+}
+
+body {
+    background-color: black;
+    color: aliceblue;
 }

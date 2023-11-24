@@ -10,33 +10,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
     $price = $_POST['price'];
     $updated_at = $_POST['updated_at'];
 
-   // INSERT and update data
+    // INSERT and update data
     if ($_POST['a_action'] == 'add') {
         // $DB->command($DB, "INSERT INTO expenses (name , price , updated_at ) VALUES ('$name' , '$price' , '$updated_at')");
-        unset($_POST['a_action']) ;
+        unset($_POST['a_action']);
         $DB->insert('expenses', $_POST);
     } elseif ($_POST['a_action'] == 'edit') {
         $id = $_POST['a_id'];
-        unset($_POST['a_action']) ;
-            $DB->update('expenses', $_POST, $id);
-     
+        unset($_POST['a_action']);
+        $DB->update('expenses', $_POST, $id);
     }
     header("Location: expenses.php");
 }
 // get all data 
 $data = $DB->selectAll('expenses');
 
-  if (isset($_GET['a_del_id'])) {
-    $id = $_GET['a_del_id']; 
-    $DB->delete('expenses',$id );
+if (isset($_GET['a_del_id'])) {
+    $id = $_GET['a_del_id'];
+    $DB->delete('expenses', $id);
 
     header("Location: expenses.php");
 }
 // get all data 
 if (isset($_GET['a_edit_id'])) {
-    $id = $_GET['a_edit_id']; 
-    $dataOne = $DB->selectOne('expenses', 'id', $id);
-        $dataOne = $dataOne[0];
+    $id = $_GET['a_edit_id'];
+    $dataOne = $DB->selectOne('expenses', 'id', $id, 'name');
+    $dataOne = $dataOne[0];
     // $resulte = $DB->command($DB, "SELECT * FROM expenses where id = $id");
     // $dataOne = $resulte->fetchArray(SQLITE3_ASSOC);
 
@@ -49,10 +48,10 @@ if (isset($_GET['a_edit_id'])) {
     <div class="container">
 
         <form action="expenses.php" method="POST" class="my-3 card p-4 costum-bg">
-            <?php if (isset($_GET['a_edit_id'])): ?>
+            <?php if (isset($_GET['a_edit_id'])) : ?>
                 <input type="hidden" name="a_action" value="edit">
                 <input type="hidden" name="a_id" value="<?= $_GET['a_edit_id'] ?>">
-            <?php else: ?>
+            <?php else : ?>
                 <input type="hidden" name="a_action" value="add">
             <?php endif; ?>
             <div class="row mb-4 ">
@@ -60,32 +59,32 @@ if (isset($_GET['a_edit_id'])) {
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form3Example1">اسم المصروف</label>
-                        <input name="name" type="text" id="form3Example1" class="form-control"value="<?= isset($dataOne) ? $dataOne['name'] : '' ?>" />
+                        <input name="name" type="text" id="form3Example1" class="form-control" value="<?= isset($dataOne) ? $dataOne['name'] : '' ?>" />
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form3Example2">منصرف</label>
-                        <input name="price" type="number" id="form3Example2" class="form-control"value="<?= isset($dataOne) ? $dataOne['price'] : '' ?>" />
+                        <input name="price" type="number" id="form3Example2" class="form-control" value="<?= isset($dataOne) ? $dataOne['price'] : '' ?>" />
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-outline">
                         <label class="form-label" for="form3Example2">التاريخ</label>
-                        <input name="updated_at" type="date" id="form3Example2" class="form-control" value="<?= isset($dataOne) ? $dataOne['updated_at'] : '' ?>"/>
+                        <input name="updated_at" type="date" id="form3Example2" class="form-control" value="<?= isset($dataOne) ? $dataOne['updated_at'] : '' ?>" />
                     </div>
                 </div>
             </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-outline-dark btn-block mb-4 bold">تسجيل</button>
+            <button type="submit" class="btn btn-outline-light btn-block mb-4 bold">تسجيل</button>
 
 
         </form>
     </div>
     <div class="container mt-5">
         <h1 class="text-center">جدول المصروفات</h1>
-        <table class="table table-bordered">
+        <table class="table table-bordered text-light">
             <thead>
                 <tr>
                     <th scope="col">N</th>
@@ -101,10 +100,10 @@ if (isset($_GET['a_edit_id'])) {
                 $totlePrice = 0;
 
 
-                foreach ($data as $key => $item):
+                foreach ($data as $key => $item) :
 
                     $totlePrice += $item['price']
-                        ?>
+                ?>
                     <tr>
                         <td>
                             <?= $key + 1 ?>
@@ -143,7 +142,7 @@ if (isset($_GET['a_edit_id'])) {
         </table>
     </div>
     <hr>
-      <!-- <div id="result"></div> -->
+    <!-- <div id="result"></div> -->
 
 
     <?php include_once "inc/footer.php" ?>

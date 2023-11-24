@@ -1,7 +1,7 @@
 <?php
-    // ob_start();
-    include_once "inc/header.php";
-    include_once "inc/db.php";
+// ob_start();
+include_once "inc/header.php";
+include_once "inc/db.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
     $name = $_POST['name'];
@@ -9,75 +9,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
     $price = $_POST['price'];
 
     if ($_POST['action'] == 'add') {
-        
-        unset($_POST['action']) ;
+
+        unset($_POST['action']);
         $DB->insert('products', $_POST);
     } elseif ($_POST['action'] == 'edit') {
         $id = $_POST['id'];
-    
-        unset($_POST['action']) ;
+
+        unset($_POST['action']);
         $DB->update('products', $_POST, $id);
     }
     header("Location: products.php");
 }
 $data = $DB->selectAll('products');
 if (isset($_GET['del_id'])) {
-    $id = $_GET['del_id']; 
+    $id = $_GET['del_id'];
 
     // $DB->command($DB, "DELETE FROM products WHERE id = $id");
-    $DB->delete('products',$id );
+    $DB->delete('products', $id);
 
     header("Location: products.php");
 }
 if (isset($_GET['edit_id'])) {
-    $id = $_GET['edit_id'];
 
-    $dataOne = $DB->selectOne('products', 'id', $id);
+    $id = $_GET['edit_id'];
+    $dataOne = $DB->selectOne('products', 'id', $id, 'name');
+
     $dataOne = $dataOne[0];
 }
 
 
-        ?>
-        <div class="container">
-        <form action="products.php" method="POST" class="my-3 card p-4 costum-bg">
-                <?php if (isset($_GET['edit_id'])): ?>
-                    <input type="hidden" name="action" value="edit">
-                    <input type="hidden" name="id" value="<?= $_GET['edit_id'] ?>">
-                <?php else: ?>
-                    <input type="hidden" name="action" value="add">
-                <?php endif; ?>
+?>
+<div class="container">
+    <form action="products.php" method="POST" class="my-3 card p-4 costum-bg">
+        <?php if (isset($_GET['edit_id'])) : ?>
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="id" value="<?= $_GET['edit_id'] ?>">
+        <?php else : ?>
+            <input type="hidden" name="action" value="add">
+        <?php endif; ?>
 
-                <div class="row mb-4 ">
-                
-                    <div class="col-4">
-                        <div class="form-outline">
-                            <label class="form-label" for="form3Example1">اسم المنتج</label>
-                            <input name="name" type="text" id="form3Example1" class="form-control"
-                                value="<?= isset($dataOne) ? $dataOne['name'] : '' ?>" /> 
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-outline">
-                            <label class="form-label" for="form3Example1">عدد القطع</label>
-                            <input name="count" type="number" id="form3Example1" class="form-control"
-                                value="<?= isset($dataOne) ? $dataOne['count'] : '' ?>" /> 
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-outline">
-                            <label class="form-label" for="form3Example2">سعر الشراء</label>
-                            <input name="price" type="number" id="form3Example2" class="form-control"
-                                value="<?= isset($dataOne) ? $dataOne['price'] : '' ?>" /> 
-                        </div>
-                    </div>
+        <div class="row mb-4 ">
+
+            <div class="col-4">
+                <div class="form-outline">
+                    <label class="form-label" for="form3Example1">اسم المنتج</label>
+                    <input name="name" type="text" id="form3Example1" class="form-control" value="<?= isset($dataOne) ? $dataOne['name'] : '' ?>" />
                 </div>
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-outline-dark btn-block mb-4 bold">تسجيل</button>
-            </form>
+            </div>
+            <div class="col-4">
+                <div class="form-outline">
+                    <label class="form-label" for="form3Example1">عدد القطع</label>
+                    <input name="count" type="number" id="form3Example1" class="form-control" value="<?= isset($dataOne) ? $dataOne['count'] : '' ?>" />
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-outline">
+                    <label class="form-label" for="form3Example2">سعر الشراء</label>
+                    <input name="price" type="number" id="form3Example2" class="form-control" value="<?= isset($dataOne) ? $dataOne['price'] : '' ?>" />
+                </div>
+            </div>
+        </div>
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-outline-light btn-block mb-4 bold">تسجيل</button>
+    </form>
 
-            <div class="container mt-5">
+    <div class="container mt-5">
         <h1 class="text-center">جدول المنتجات</h1>
-        <table class="table table-bordered">
+        <table class="table table-bordered text-light">
             <thead>
                 <tr>
                     <th scope="col">N</th>
@@ -90,7 +88,7 @@ if (isset($_GET['edit_id'])) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($data as $key => $item):?>
+                <?php foreach ($data as $key => $item) : ?>
                     <tr>
                         <td>
                             <?= $key + 1 ?>
@@ -113,13 +111,13 @@ if (isset($_GET['edit_id'])) {
 
                         </td>
                     </tr>
-                <?php endforeach;?>
+                <?php endforeach; ?>
 
             </tbody>
 
         </table>
     </div>
 
-        </div>
+</div>
 
-        <?php include_once "inc/footer.php" ?>
+<?php include_once "inc/footer.php" ?>

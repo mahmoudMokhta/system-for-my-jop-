@@ -22,31 +22,69 @@ if (isset($_GET['id'])) {
 <body>
     <div class="container mt-5">
         <div class="">
-            <div class="" >
+            <div class="">
                 <h1 class="text-center mb-4">ملاحظات وحسابات جانبيه</h1>
-                <form action="toDoList.php" method="post" style="width: 30rem;" >
-                    <div class="input-group mb-3">
-                        <input name="name" type="text" id="taskInput" class="form-control" placeholder="Add a new task">
-                        <div class="input-group-append">
+                <form action="toDoList.php" method="post">
+                    <div class=" row">
+                        <div class="col-6">
+                            <input name="name" type="text" id="taskInput" class="form-control mb-3"
+                                placeholder="Add a new task">
+                        </div>
+                        <div class="col-2">
+                            <input name="date" type="date" id="taskInput" class="form-control mb-3">
+                        </div>
+                        <div class="col-2">
                             <button class="btn btn-success" type="submit">اضافه</button>
                         </div>
                     </div>
-                </form>
-                <div class="d-flex flex-wrap">
+            </div>
+            </form>
+            <!-- <div class="d-flex flex-wrap">
                     <?php foreach ($allTasks as $key => $value) : ?>
-                        <div class=" m-2" >
-                            <div class="card" style="width: 16rem;">
-                                <div class="card-body">
-                                    <p class="card-text"><?= $value['name'] ?></p>
-                                    <a href="toDoList.php?id=<?= $value['id'] ?>" class="btn btn-danger">delete</a>
-                                </div>
+                    <div class=" m-2">
+                        <div class="card" style="width: 16rem;">
+                            <div class="card-body">
+                                <p class="card-text"><?= $value['name'] ?></p>
+                                <a href="toDoList.php?id=<?= $value['id'] ?>" class="btn btn-danger">delete</a>
                             </div>
                         </div>
+                    </div>
                     <?php endforeach; ?>
-                </div>
-            </div>
+                </div> -->
+            <table class="table table-bordered text-light">
+                <thead>
+                    <tr>
+                        <th scope="col">N</th>
+                        <th scope="col">تاريخ</th>
+                        <th scope="col">الوصف</th>
+                        <th scope="col">تفاعل</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($allTasks as $key => $value) : ?>
+                    <tr>
+                        <td>
+                            <?= $key + 1 ?>
+                        </td>
+                        <td>
+                            <?= $value['date'] ?>
+                        </td>
+                        <td>
+                            <?= $value['name'] ?>
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-danger" href="toDoList.php?id=<?= $value['id'] ?>">مسح</a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+
+                </tbody>
+
+            </table>
         </div>
     </div>
+    </div>
 </body>
-</html>
 
+</html>
